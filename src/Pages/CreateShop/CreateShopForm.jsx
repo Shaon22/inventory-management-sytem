@@ -45,7 +45,7 @@ const CreateShopForm = ({item}) => {
                     Swal.fire({
                         position: "top",
                         icon: "success",
-                        title: "Shop Created successfully",
+                        title: "Shop Created successfull,ReLoad to Get Dashboard Option",
                         showConfirmButton: false,
                         timer: 1500
                     });

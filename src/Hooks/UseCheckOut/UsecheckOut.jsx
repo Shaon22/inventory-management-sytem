@@ -8,14 +8,14 @@ const UsecheckOut = () => {
     if(loading){
         <span className="loading loading-ring loading-lg"></span>
     }
-    const { data: checkOutInfo = [] } = useQuery({
+    const { data: checkOutInfo = [],refetch } = useQuery({
         queryKey: ['checkOuts',user?.email],
         queryFn: async () => {
             const res = await axiosPublic.get(`/checkOuts?email=${user.email}`)
             return res.data
         }
     })
-    return [checkOutInfo]
+    return [checkOutInfo,refetch]
 };
 
 export default UsecheckOut;

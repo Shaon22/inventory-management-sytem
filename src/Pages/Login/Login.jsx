@@ -1,14 +1,13 @@
-import { FcHome } from "react-icons/fc";
+import { FcGoogle, FcHome } from "react-icons/fc";
 import { FiLogIn } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/UseAuth/UseAuth";
 import Swal from "sweetalert2";
-import UseManager from "../../Hooks/UseManager/UseManager";
-// import UseAdmin from "../../Hooks/UseAdmin/UseAdmin";
+import useAxiosPublic from "../../Hooks/UseAxios/UseAxiosPublic";
 const Login = () => {
-    const { signIn } = useAuth()
-    // const [isAdmin] = UseAdmin()
+    const { signIn, googleLogIn } = useAuth()
+    const axiosPublic = useAxiosPublic()
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const onSubmit = (data) => {
@@ -28,6 +27,35 @@ const Login = () => {
                     })
                     navigate('/')
                 }
+            })
+    }
+    const handleGoogle = () => {
+        googleLogIn()
+            .then(result => {
+                console.log(result.user)
+                const userInfo = {
+                    name: result.user?.displayName, 
+                    email: result.user?.email
+                   
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            Swal.fire({
+                                position: "top",
+                                icon: "success",
+                                title: "Registration Successfull",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    })
+                navigate('/')
+
+            })
+            .catch(error => {
+                console.error(error)
+
             })
     }
 
@@ -55,6 +83,8 @@ const Login = () => {
                             <button className='btn w-full text-white bg-cyan-400 '>Log in <FiLogIn className='text-xl'></FiLogIn></button>
                         </form>
                         < hr className='my-5' />
+
+                        <button onClick={handleGoogle} className='btn w-full text-white bg-cyan-400'>Log in with <FcGoogle className='text-xl'></FcGoogle></button>
                         <h1 className="font-medium text-center mt-3">Do not have account ? <Link className="text-cyan-400 font-semibold" to={'/register'}>Register</Link> </h1>
 
 

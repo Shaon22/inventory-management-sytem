@@ -68,7 +68,7 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/updateProducts/:id',
         element: <UpdateProducts></UpdateProducts>,
-        loader:({params})=>fetch(`http://localhost:5000/product/${params.id}`)
+        loader:({params})=>fetch(`https://inventory-management-server-ten.vercel.app/product/${params.id}`)
 
       },
       {
